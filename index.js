@@ -2,8 +2,19 @@ const express = require("express");
 const morgan = require("morgan");
 const recipes = require("./routes/recipes");
 const home = require("./routes/home");
+const mongoose = require("mongoose");
+
 
 const app = express();
+
+mongoose
+  .connect("mongodb://localhost/Recipe-Book")
+  .then(() => console.log("Connected to MongoDB.."))
+  .catch((err) => console.error("Could not connect tp MongoDB", err));
+
+
+
+
 
 // body parsing to populate req.body
 app.use(express.json());
