@@ -3,7 +3,8 @@ const morgan = require("morgan");
 const recipes = require("./routes/recipes");
 const home = require("./routes/home");
 const mongoose = require("mongoose");
-
+const userRouter = require("./routes/users");
+const authRouter = require("./routes/auth");
 
 const app = express();
 
@@ -12,13 +13,11 @@ mongoose
   .then(() => console.log("Connected to MongoDB.."))
   .catch((err) => console.error("Could not connect tp MongoDB", err));
 
-
-
-
-
 // body parsing to populate req.body
 app.use(express.json());
 app.use("/api/recipes", recipes);
+app.use("/api/users", userRouter);
+app.use("/api/auth", authRouter);
 app.use("/", home);
 
 if (app.get("env") === "development") {
