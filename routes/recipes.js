@@ -1,3 +1,4 @@
+const auth = require('../middleware/auth');
 const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
@@ -35,8 +36,8 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST
-router.post("/", async (req, res) => {
-  const { error, value } = validateRecipe(req.body);
+router.post("/", auth ,  async (req, res) => {
+  const { error } = validateRecipe(req.body);
 
   if (error) {
     res.status(400).json({ message: error.message });
@@ -50,7 +51,7 @@ router.post("/", async (req, res) => {
 });
 
 // PUT
-router.put("/:id", async (req, res) => {
+router.put("/:id",auth, async (req, res) => {
   const recipe = await Recipe.findById(req.params.id);
 
   if (!recipe) {
@@ -75,7 +76,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   const { id } = req.params;
   const recipe = await Recipe.findById(id);
 
