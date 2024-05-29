@@ -16,6 +16,7 @@ mongoose
 
 // body parsing to populate req.body
 app.use(express.json());
+// app.use(express.static('public'));
 
 // Routes:
 app.use("/api/recipes", recipeRouter);
