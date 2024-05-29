@@ -5,7 +5,6 @@ const error = require("../middleware/error");
 const recipeRouter = require("../routes/recipes");
 const home = require("../routes/home");
 
-
 module.exports = function (app) {
   app.use(express.json());
   app.use("/api/recipes", recipeRouter);
