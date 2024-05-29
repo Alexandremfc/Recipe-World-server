@@ -1,15 +1,9 @@
 const express = require("express");
 const morgan = require("morgan");
-const mongoose = require("mongoose");
 
 const app = express();
 require('./startup/routes')(app);
-
-mongoose
-  .connect("mongodb://localhost/Recipe-Book")
-  .then(() => console.log("Connected to MongoDB.."))
-  .catch((err) => console.error("Could not connect tp MongoDB", err));
-
+require("./startup/db")();
 
 
 if (app.get("env") === "development") {
