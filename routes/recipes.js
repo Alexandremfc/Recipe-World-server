@@ -1,11 +1,10 @@
-const admin = require("../middleware/admin");
 const auth = require("../middleware/auth");
 const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
 const _ = require("lodash");
 const Recipe = require("../models/Recipe.model");
-const asyncMiddleware = require("../middleware/async");
+require("express-async-errors");
 
 const recipe = new Recipe({
   name: "chicken parmesan",
@@ -13,82 +12,62 @@ const recipe = new Recipe({
 });
 
 // GET
-router.get(
-  "/",
-  asyncMiddleware(async (req, res, next) => {
-    console.log("Retrieve all recipes.");
-    const recipes = await Recipe.find();
-    res.json(recipes);
-  })
-);
+router.get("/", async (req, res, next) => {
+  console.log("Retrieve all recipes.");
+  const recipes = await Recipe.find();
+  res.json(recipes);
+});
 
-router.get(
-  "/:id",
-  asyncMiddleware(async (req, res) => {
-    console.log("Retrieve a specific recipe.");
-    const recipe = await Recipe.findById(req.params.id);
+router.get("/:id", async (req, res) => {
+  console.log("Retrieve a specific recipe.");
+  const recipe = await Recipe.findById(req.params.id);
 
-    if (!recipe) return res.status(404).send("the recipe is not found..!");
+  if (!recipe) return res.status(404).send("the recipe is not found..!");
 
-    res.json(recipe);
-  })
-);
+  res.json(recipe);
+});
 
 // POST
-router.post(
-  "/",
-  auth,
-  asyncMiddleware(async (req, res) => {
-    const { error } = validateRecipe(req.body);
+router.post("/", auth, async (req, res) => {
+  const { error } = validateRecipe(req.body);
 
-    if (error) return res.status(400).json({ message: error.message });
+  if (error) return res.status(400).json({ message: error.message });
 
-    const result = await Recipe.create(
-      _.pick(req.body, ["name", "ingridents"])
-    );
-    console.log("New Recipe has been added to the dataBase .");
-    res.json(result);
-  })
-);
+  const result = await Recipe.create(_.pick(req.body, ["name", "ingridents"]));
+  console.log("New Recipe has been added to the dataBase .");
+  res.json(result);
+});
 
 // PUT
-router.put(
-  "/:id",
-  auth,
-  asyncMiddleware(async (req, res) => {
-    const recipe = await Recipe.findById(req.params.id);
+router.put("/:id", auth, async (req, res) => {
+  const recipe = await Recipe.findById(req.params.id);
 
-    if (!recipe) return res.status(404).send("the recipe is not found.!");
+  if (!recipe) return res.status(404).send("the recipe is not found.!");
 
-    const { error } = validateRecipe(req.body);
+  const { error } = validateRecipe(req.body);
 
-    if (error) return res.status(400).send(error.message);
+  if (error) return res.status(400).send(error.message);
 
-    recipe.name = req.body.name;
-    recipe.ingridents = req.body.ingridents;
+  recipe.name = req.body.name;
+  recipe.ingridents = req.body.ingridents;
 
-    console.log("a Recipe has been updated in the dataBase .");
-    res.json(recipe);
-  })
-);
+  console.log("a Recipe has been updated in the dataBase .");
+  res.json(recipe);
+});
 
 // DELETE
-router.delete(
-  "/:id",
-  auth,
-  asyncMiddleware(async (req, res) => {
-    const { id } = req.params;
+router.delete("/:id", auth, async (req, res) => {
+  const { id } = req.params;
 
-    const recipe = await Recipe.findById(id);
+  const recipe = await Recipe.findById(id);
 
-    if (!recipe) return res.status(404).send("the recipe with is not found.!");
+  if (!recipe) return res.status(404).send("the recipe with is not found.!");
 
-    const deletedRecipe = await Recipe.deleteOne({ _id: id });
+  const deletedRecipe = await Recipe.deleteOne({ _id: id });
 
-    console.log("a recipe has been deleted from the dataBase.");
-    res.send("you have sucsessfully removed a recipe.");
-  })
-);
+  console.log("a recipe has been deleted from the dataBase.");
+  res.send("you have sucsessfully removed a recipe.");
+});
 
 function validateRecipe(recipe) {
   const schema = Joi.object({
