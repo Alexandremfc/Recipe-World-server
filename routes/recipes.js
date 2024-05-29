@@ -1,7 +1,9 @@
-const auth = require('../middleware/auth');
+const admin = require("../middleware/admin");
+const auth = require("../middleware/auth");
 const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
+const _ = require("lodash");
 const Recipe = require("../models/Recipe.model");
 
 const recipe = new Recipe({
@@ -15,43 +17,47 @@ router.get("/", async (req, res) => {
     console.log("Retrieve all recipes.");
     const recipes = await Recipe.find();
     res.json(recipes);
-  } catch (e) {
+  } catch (err) {
+    console.log(err.message);
     res.status(500).json({
       message: "Error while Retreiving the recipes from the server..",
-      error: e.message,
     });
   }
 });
 
 router.get("/:id", async (req, res) => {
-  console.log("Retrieve a specific recipe.");
-  const recipe = await Recipe.findById(req.params.id);
-
-  if (!recipe) {
-    res.status(404).send("the recipe with the give id is not found..!");
-    return;
+  try {
+    console.log("Retrieve a specific recipe.");
+    const recipe = await Recipe.findById(req.params.id);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ message: "Invalid id.." });
   }
+
+  if (!recipe) return res.status(404).send("the recipe is not found..!");
 
   res.json(recipe);
 });
 
 // POST
-router.post("/", auth ,  async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validateRecipe(req.body);
 
-  if (error) {
-    res.status(400).json({ message: error.message });
-    return;
+  if (error) return res.status(400).json({ message: error.message });
+
+  try {
+    const result = await Recipe.create(
+      _.pick(req.body, ["name", "ingridents"])
+    );
+    console.log("New Recipe has been added to the dataBase .");
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: "Error , while creating a new recipe.." });
   }
-
-  const result = await Recipe.create(value);
-  console.log("New Recipe has been added to the dataBase .");
-
-  res.json(result);
 });
 
 // PUT
-router.put("/:id",auth, async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   const recipe = await Recipe.findById(req.params.id);
 
   if (!recipe) {

@@ -1,6 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
-const recipes = require("./routes/recipes");
+const recipeRouter = require("./routes/recipes");
 const home = require("./routes/home");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/users");
@@ -15,7 +15,9 @@ mongoose
 
 // body parsing to populate req.body
 app.use(express.json());
-app.use("/api/recipes", recipes);
+
+// Routes:
+app.use("/api/recipes", recipeRouter);
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/", home);
