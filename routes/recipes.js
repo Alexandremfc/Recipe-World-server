@@ -6,11 +6,6 @@ const _ = require("lodash");
 const Recipe = require("../models/Recipe.model");
 require("express-async-errors");
 
-const recipe = new Recipe({
-  name: "chicken parmesan",
-  ingridents: ["2 oz chicken", "100g parmesan"],
-});
-
 // GET
 router.get("/", async (req, res, next) => {
   console.log("Retrieve all recipes.");
@@ -33,7 +28,17 @@ router.post("/", auth, async (req, res) => {
 
   if (error) return res.status(400).json({ message: error.message });
 
-  const result = await Recipe.create(_.pick(req.body, ["name", "ingridents"]));
+  const recipeDetails = _.pick(req.body, [
+    "title",
+    "description",
+    "ingridients",
+    "instructions",
+    "image",
+    "category",
+    "author",
+  ]);
+
+  const result = await Recipe.create(recipeDetails);
   console.log("New Recipe has been added to the dataBase .");
   res.json(result);
 });
@@ -48,8 +53,13 @@ router.put("/:id", auth, async (req, res) => {
 
   if (error) return res.status(400).send(error.message);
 
-  recipe.name = req.body.name;
-  recipe.ingridents = req.body.ingridents;
+  recipe.title = req.body.title;
+  recipe.description = req.body.description;
+  recipe.ingridients = req.body.ingridients;
+  recipe.instructions = req.body.instructions;
+  recipe.image = req.body.image;
+  recipe.category = req.body.category;
+  recipe.author = req.body.author;
 
   console.log("a Recipe has been updated in the dataBase .");
   res.json(recipe);
@@ -70,9 +80,17 @@ router.delete("/:id", auth, async (req, res) => {
 });
 
 function validateRecipe(recipe) {
+  const ENUM = ["Breakfast", "Lunch", "Dinner", "Snack"];
   const schema = Joi.object({
-    name: Joi.string().min(3).max(30).required(),
-    ingridents: Joi.array().items(Joi.string()),
+    title: Joi.string().min(3).max(30).required(),
+    description: Joi.string().min(3).max(255).required(),
+    ingridients: Joi.array().items(Joi.string().required()).min(1).required(),
+    instructions: Joi.array().items(Joi.string().required()).min(3).required(),
+    image: Joi.string().min(5).max(500).required(),
+    category: Joi.string()
+      .valid(...ENUM)
+      .required(),
+    author: Joi.string().length(24).required(),
   });
 
   return schema.validate(recipe);
