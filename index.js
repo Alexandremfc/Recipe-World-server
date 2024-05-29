@@ -1,13 +1,9 @@
 const express = require("express");
 const morgan = require("morgan");
-const recipeRouter = require("./routes/recipes");
-const home = require("./routes/home");
-const mongoose = require("mongoose");
-const userRouter = require("./routes/users");
-const authRouter = require("./routes/auth");
-const error = require("./middleware/error");
 
 const app = express();
+require('./startup/routes')(app);
+require("./startup/db")();
 
 mongoose
   .connect("mongodb://localhost/Recipe-Book")
