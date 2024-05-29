@@ -5,6 +5,7 @@ const home = require("./routes/home");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
+const error = require("./middleware/error");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/api/recipes", recipeRouter);
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/", home);
+app.use(error);
 
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));

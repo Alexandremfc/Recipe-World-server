@@ -12,14 +12,13 @@ const recipe = new Recipe({
 });
 
 // GET
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     console.log("Retrieve all recipes.");
     const recipes = await Recipe.find();
     res.json(recipes);
   } catch (err) {
-    console.log(err.message);
-    res.status(500).send("something failed.");
+    next(err);
   }
 });
 
@@ -28,8 +27,7 @@ router.get("/:id", async (req, res) => {
     console.log("Retrieve a specific recipe.");
     const recipe = await Recipe.findById(req.params.id);
   } catch (err) {
-    console.log(err.message);
-    res.status(500).send("something failed.");
+    next(err);
   }
 
   if (!recipe) return res.status(404).send("the recipe is not found..!");
@@ -50,7 +48,7 @@ router.post("/", auth, async (req, res) => {
     console.log("New Recipe has been added to the dataBase .");
     res.json(result);
   } catch (err) {
-    res.status(500).send("something failed.");
+    next(err);
   }
 });
 
@@ -59,8 +57,7 @@ router.put("/:id", auth, async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
   } catch (err) {
-    console.log(err.message);
-    res.status(500).send("something failed.");
+    next(err);
   }
 
   if (!recipe) return res.status(404).send("the recipe is not found.!");
@@ -82,8 +79,7 @@ router.delete("/:id", auth, async (req, res) => {
   try {
     const recipe = await Recipe.findById(id);
   } catch (err) {
-    console.log(err.message);
-    res.status(500).send("something failed.");
+    next(err);
   }
 
   if (!recipe) return res.status(404).send("the recipe with is not found.!");
@@ -91,12 +87,11 @@ router.delete("/:id", auth, async (req, res) => {
   try {
     const deletedRecipe = await Recipe.deleteOne({ _id: id });
   } catch (err) {
-    console.log(err.message);
-    res.status(500).send("something failed.");
+    next(err);
   }
 
   console.log("a recipe has been deleted from the dataBase.");
-  res.send("you have sucsessfully removed a recipe from the database.");
+  res.send("you have sucsessfully removed a recipe.");
 });
 
 function validateRecipe(recipe) {
