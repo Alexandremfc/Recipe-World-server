@@ -19,9 +19,7 @@ router.get("/", async (req, res) => {
     res.json(recipes);
   } catch (err) {
     console.log(err.message);
-    res.status(500).json({
-      message: "Error while Retreiving the recipes from the server..",
-    });
+    res.status(500).send("something failed.");
   }
 });
 
@@ -31,7 +29,7 @@ router.get("/:id", async (req, res) => {
     const recipe = await Recipe.findById(req.params.id);
   } catch (err) {
     console.log(err.message);
-    res.status(500).json({ message: "Invalid id.." });
+    res.status(500).send("something failed.");
   }
 
   if (!recipe) return res.status(404).send("the recipe is not found..!");
@@ -52,27 +50,24 @@ router.post("/", auth, async (req, res) => {
     console.log("New Recipe has been added to the dataBase .");
     res.json(result);
   } catch (err) {
-    res.status(500).json({ message: "Error , while creating a new recipe.." });
+    res.status(500).send("something failed.");
   }
 });
 
 // PUT
 router.put("/:id", auth, async (req, res) => {
-  const recipe = await Recipe.findById(req.params.id);
-
-  if (!recipe) {
-    res
-      .status(404)
-      .json({ message: "the recipe with the provided id is not found.!" });
-    return;
+  try {
+    const recipe = await Recipe.findById(req.params.id);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("something failed.");
   }
 
-  const { error, value } = validateRecipe(req.body);
+  if (!recipe) return res.status(404).send("the recipe is not found.!");
 
-  if (error) {
-    res.status(400).send(error.message);
-    return;
-  }
+  const { error } = validateRecipe(req.body);
+
+  if (error) return res.status(400).send(error.message);
 
   recipe.name = req.body.name;
   recipe.ingridents = req.body.ingridents;
@@ -84,19 +79,24 @@ router.put("/:id", auth, async (req, res) => {
 // DELETE
 router.delete("/:id", auth, async (req, res) => {
   const { id } = req.params;
-  const recipe = await Recipe.findById(id);
-
-  if (!recipe) {
-    res.status(404).send("the recipe with the provided id is not found.!");
-    return;
+  try {
+    const recipe = await Recipe.findById(id);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("something failed.");
   }
 
-  const deletedRecipe = await Recipe.deleteOne({ _id: id });
+  if (!recipe) return res.status(404).send("the recipe with is not found.!");
+
+  try {
+    const deletedRecipe = await Recipe.deleteOne({ _id: id });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("something failed.");
+  }
 
   console.log("a recipe has been deleted from the dataBase.");
-  res.json({
-    message: "you have sucsessfully removed a recipe from the database.",
-  });
+  res.send("you have sucsessfully removed a recipe from the database.");
 });
 
 function validateRecipe(recipe) {
