@@ -1,4 +1,5 @@
 const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
@@ -6,8 +7,27 @@ const _ = require("lodash");
 const bcrypt = require("bcrypt");
 const { User, validate } = require("../models/User.model");
 
+router.get("/", [auth, admin], async (req, res) => {
+  const users = await User.find();
+  res.json(users);
+});
+router.put("/:userId", [auth, admin], async (req, res) => {
+  const { error } = validate(req.body);
+  if (error) return res.status(400).json(error.details[0].message);
+
+  const { id } = req.params;
+  const updatedUser = await User.findByIdAndUpdate(id, req.body , { new: true});
+  res.json(updatedUser);
+});
+router.delete("/:userId", [auth, admin], async (req, res) => {
+  const { id } = req.params;
+
+  const users = await User.findByIdAndDelete(id);
+  res.json(users);
+});
+
 router.get("/me", auth, async (req, res) => {
-  const user = await User.findById(req.user._id).select('-password');
+  const user = await User.findById(req.user._id).select("-password");
   res.json(user);
 });
 
