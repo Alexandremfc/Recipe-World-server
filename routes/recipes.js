@@ -10,7 +10,7 @@ require("express-async-errors");
 router.get("/", async (req, res, next) => {
   console.log("Retrieve all recipes.");
   const recipes = await Recipe.find();
-  res.json(recipes);
+  res.json({ count: recipes.length, results: recipes });
 });
 
 router.get("/:id", async (req, res) => {
@@ -78,6 +78,8 @@ router.delete("/:id", auth, async (req, res) => {
   console.log("a recipe has been deleted from the dataBase.");
   res.send("you have sucsessfully removed a recipe.");
 });
+
+
 
 function validateRecipe(recipe) {
   const ENUM = ["Breakfast", "Lunch", "Dinner", "Snack"];
