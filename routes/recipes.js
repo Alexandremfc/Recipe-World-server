@@ -6,10 +6,22 @@ const _ = require("lodash");
 const Recipe = require("../models/Recipe.model");
 require("express-async-errors");
 
+// TODO: how to handle this env varaible
+const BASE_URL = "http://localhost:3000";
+
+
 // GET
 router.get("/", async (req, res, next) => {
   console.log("Retrieve all recipes.");
+  
   const recipes = await Recipe.find();
+  
+  recipes.forEach(recipe => {
+    if(recipe.image){
+      recipe.image = BASE_URL + recipe.image;
+    }
+  });
+  console.log(recipes);
   res.json({ count: recipes.length, results: recipes });
 });
 
@@ -18,6 +30,8 @@ router.get("/:id", async (req, res) => {
   const recipe = await Recipe.findById(req.params.id);
 
   if (!recipe) return res.status(404).send("the recipe is not found..!");
+
+  // TODO: add the full server url to every image served
 
   res.json(recipe);
 });
@@ -38,6 +52,8 @@ router.post("/", auth, async (req, res) => {
     "author",
   ]);
 
+  // TODO: add /images to the beginning of every single image to make them accessible on the server
+
   const result = await Recipe.create(recipeDetails);
   console.log("New Recipe has been added to the dataBase .");
   res.json(result);
@@ -57,6 +73,7 @@ router.put("/:id", auth, async (req, res) => {
   recipe.description = req.body.description;
   recipe.ingridients = req.body.ingridients;
   recipe.instructions = req.body.instructions;
+  // TODO: add the /images to the new image
   recipe.image = req.body.image;
   recipe.category = req.body.category;
   recipe.author = req.body.author;
