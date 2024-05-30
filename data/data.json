@@ -1,0 +1,84 @@
+[
+    {
+      "title": "Classic Pancakes",
+      "description": "Fluffy, classic pancakes perfect for a quick breakfast or brunch.",
+      "ingridients": [
+        "1 cup all-purpose flour",
+        "2 tablespoons sugar",
+        "1 tablespoon baking powder",
+        "1/2 teaspoon salt",
+        "1 cup milk",
+        "2 tablespoons melted butter",
+        "1 large egg",
+        "1 teaspoon vanilla extract"
+      ],
+      "instructions": [
+        "In a bowl, whisk together the flour, sugar, baking powder, and salt.",
+        "In another bowl, beat the milk, melted butter, egg, and vanilla extract together.",
+        "Pour the wet ingredients into the dry ingredients and stir until just combined.",
+        "Heat a non-stick pan over medium heat and pour 1/4 cup of batter for each pancake.",
+        "Cook until bubbles form on the surface, then flip and cook until golden brown.",
+        "Serve with syrup, butter, and your favorite toppings."
+      ],
+      "image": "https://example.com/images/pancakes.jpg",
+      "category": "Breakfast",
+      "author": "60d0fe4f5311236168a109ca",
+      "createdAt": "2024-05-30T12:00:00Z",
+      "updatedAt": "2024-05-30T12:00:00Z"
+    },
+    {
+      "title": "Chicken Caesar Salad",
+      "description": "A fresh and healthy chicken Caesar salad perfect for lunch or dinner.",
+      "ingridients": [
+        "2 cups romaine lettuce, chopped",
+        "1 cup cooked chicken breast, sliced",
+        "1/4 cup Caesar dressing",
+        "1/4 cup grated Parmesan cheese",
+        "1 cup croutons",
+        "1 lemon, cut into wedges"
+      ],
+      "instructions": [
+        "In a large bowl, combine the romaine lettuce and chicken breast.",
+        "Add the Caesar dressing and toss to coat.",
+        "Sprinkle with grated Parmesan cheese and croutons.",
+        "Serve with lemon wedges on the side."
+      ],
+      "image": "https://example.com/images/caesar_salad.jpg",
+      "category": "Lunch",
+      "author": "60d0fe4f5311236168a109cb",
+      "createdAt": "2024-05-30T12:10:00Z",
+      "updatedAt": "2024-05-30T12:10:00Z"
+    },
+    {
+      "title": "Spaghetti Bolognese",
+      "description": "A classic Italian pasta dish with rich and savory meat sauce.",
+      "ingridients": [
+        "200g spaghetti",
+        "2 tablespoons olive oil",
+        "1 onion, finely chopped",
+        "2 garlic cloves, minced",
+        "400g ground beef",
+        "1 can (400g) crushed tomatoes",
+        "2 tablespoons tomato paste",
+        "1 teaspoon dried oregano",
+        "1 teaspoon dried basil",
+        "Salt and pepper to taste",
+        "Grated Parmesan cheese for serving"
+      ],
+      "instructions": [
+        "Cook the spaghetti according to package instructions.",
+        "In a large pan, heat the olive oil over medium heat and sauté the onion and garlic until soft.",
+        "Add the ground beef and cook until browned.",
+        "Stir in the crushed tomatoes, tomato paste, oregano, and basil.",
+        "Simmer the sauce for 20 minutes, stirring occasionally.",
+        "Season with salt and pepper.",
+        "Serve the sauce over the cooked spaghetti and sprinkle with grated Parmesan cheese."
+      ],
+      "image": "https://example.com/images/spaghetti_bolognese.jpg",
+      "category": "Dinner",
+      "author": "60d0fe4f5311236168a109cc",
+      "createdAt": "2024-05-30T12:20:00Z",
+      "updatedAt": "2024-05-30T12:20:00Z"
+    }
+  ]
+  
