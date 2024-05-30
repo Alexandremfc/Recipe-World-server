@@ -9,6 +9,7 @@ const cors = require("../middleware/cors");
 module.exports = function (app) {
   app.use(cors);
   app.use(express.json());
+  app.use(express.static('public'))
   app.use("/api/recipes", recipeRouter);
   app.use("/api/users", userRouter);
   app.use("/api/auth", authRouter);
