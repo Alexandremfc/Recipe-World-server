@@ -20,7 +20,7 @@
         "Cook until bubbles form on the surface, then flip and cook until golden brown.",
         "Serve with syrup, butter, and your favorite toppings."
       ],
-      "image": "https://example.com/images/pancakes.jpg",
+      "image": "/images/Classic-Pancakes.jpg",
       "category": "Breakfast",
       "author": "60d0fe4f5311236168a109ca",
       "createdAt": "2024-05-30T12:00:00Z",
@@ -43,7 +43,7 @@
         "Sprinkle with grated Parmesan cheese and croutons.",
         "Serve with lemon wedges on the side."
       ],
-      "image": "https://example.com/images/caesar_salad.jpg",
+      "image": "/images/Chicken-Caesar-Salad.jpg",
       "category": "Lunch",
       "author": "60d0fe4f5311236168a109cb",
       "createdAt": "2024-05-30T12:10:00Z",
@@ -74,7 +74,7 @@
         "Season with salt and pepper.",
         "Serve the sauce over the cooked spaghetti and sprinkle with grated Parmesan cheese."
       ],
-      "image": "https://example.com/images/spaghetti_bolognese.jpg",
+      "image": "/images/Spaghetti-Bolognese.jpg",
       "category": "Dinner",
       "author": "60d0fe4f5311236168a109cc",
       "createdAt": "2024-05-30T12:20:00Z",
