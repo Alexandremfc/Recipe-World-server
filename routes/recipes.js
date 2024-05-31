@@ -5,23 +5,20 @@ const Joi = require("joi");
 const _ = require("lodash");
 const Recipe = require("../models/Recipe.model");
 require("express-async-errors");
+require('dotenv').config();
 
-// TODO: how to handle this env varaible
-const BASE_URL = "http://localhost:3000";
 
 
 // GET
 router.get("/", async (req, res, next) => {
   console.log("Retrieve all recipes.");
-  
   const recipes = await Recipe.find();
   
   recipes.forEach(recipe => {
     if(recipe.image){
-      recipe.image = BASE_URL + recipe.image;
+      recipe.image = process.env.BASE_URL + recipe.image;
     }
   });
-  console.log(recipes);
   res.json({ count: recipes.length, results: recipes });
 });
 
