@@ -5,17 +5,14 @@ const Joi = require("joi");
 const _ = require("lodash");
 const Recipe = require("../models/Recipe.model");
 require("express-async-errors");
-require('dotenv').config();
-
-
 
 // GET
 router.get("/", async (req, res, next) => {
   console.log("Retrieve all recipes.");
   const recipes = await Recipe.find();
-  
-  recipes.forEach(recipe => {
-    if(recipe.image){
+
+  recipes.forEach((recipe) => {
+    if (recipe.image) {
       recipe.image = process.env.BASE_URL + recipe.image;
     }
   });
@@ -28,7 +25,7 @@ router.get("/:id", async (req, res) => {
 
   if (!recipe) return res.status(404).send("the recipe is not found..!");
 
-  // TODO: add the full server url to every image served
+  recipe.image = process.env.BASE_URL + recipe.image;
 
   res.json(recipe);
 });
@@ -92,8 +89,6 @@ router.delete("/:id", auth, async (req, res) => {
   console.log("a recipe has been deleted from the dataBase.");
   res.send("you have sucsessfully removed a recipe.");
 });
-
-
 
 function validateRecipe(recipe) {
   const ENUM = ["Breakfast", "Lunch", "Dinner", "Snack"];
