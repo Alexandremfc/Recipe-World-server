@@ -4,6 +4,7 @@ const router = express.Router();
 const Joi = require("joi");
 const _ = require("lodash");
 const Recipe = require("../models/Recipe.model");
+const upload = require("../middleware/upload");
 require("express-async-errors");
 
 // GET
@@ -89,6 +90,21 @@ router.delete("/:id", auth, async (req, res) => {
   console.log("a recipe has been deleted from the dataBase.");
   res.send("you have sucsessfully removed a recipe.");
 });
+
+// Upload images:
+router.post('/upload', (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    } else {
+      if (!req.file) {
+        return res.status(400).json({ error: 'No file selected' });
+      }
+      res.status(200).json({ message: 'File uploaded successfully', file: req.file });
+    }
+  });
+});
+
 
 function validateRecipe(recipe) {
   const ENUM = ["Breakfast", "Lunch", "Dinner", "Snack"];
