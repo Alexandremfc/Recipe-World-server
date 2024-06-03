@@ -5,6 +5,7 @@ const error = require("../middleware/error");
 const recipeRouter = require("../routes/recipes");
 const home = require("../routes/home");
 const cors = require("../middleware/cors");
+require('dotenv').config();
 
 module.exports = function (app) {
   app.use(cors);
