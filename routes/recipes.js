@@ -38,6 +38,7 @@ router.get("/:id", auth, async (req, res) => {
 
 // POST
 router.post("/", auth, async (req, res) => {
+
   const { error } = validateRecipe(req.body);
 
   if (error) return res.status(400).json({ message: error.message });
@@ -167,7 +168,6 @@ function validateRecipe(recipe) {
     category: Joi.string()
       .valid(...ENUM)
       .required(),
-    author: Joi.string().length(24).required(),
   });
 
   return schema.validate(recipe);
