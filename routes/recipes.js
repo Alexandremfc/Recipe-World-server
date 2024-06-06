@@ -161,7 +161,7 @@ function validateRecipeEdit(recipe) {
 function validateRecipe(recipe) {
   const ENUM = ["Breakfast", "Lunch", "Dinner", "Snack"];
   const schema = Joi.object({
-    title: Joi.string().min(3).max(30).required(),
+    title: Joi.string().min(3).max(100).required(),
     description: Joi.string().min(3).max(255).required(),
     ingridients: Joi.array().items(Joi.string().required()).min(1).required(),
     instructions: Joi.array().items(Joi.string().required()).min(3).required(),
