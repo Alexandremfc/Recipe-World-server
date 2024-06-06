@@ -27,7 +27,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", auth, async (req, res) => {
   console.log("Retrieve a specific recipe.");
-  const recipe = await Recipe.findById(req.params.id).populate('reviews');
+  const recipe = await Recipe.findById(req.params.id).populate('reviews').populate('author');
 
   if (!recipe) return res.status(404).send("the recipe is not found..!");
 
