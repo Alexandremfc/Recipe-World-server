@@ -17,11 +17,11 @@ router.get("/", async (req, res) => {
   console.log("Retrieve all recipes.");
   const recipes = await Recipe.find();
 
-  recipes.forEach((recipe) => {
-    if (recipe.image) {
-      recipe.image = getImageUrl(recipe);
-    }
-  });
+  // recipes.forEach((recipe) => {
+  //   if (recipe.image) {
+  //     recipe.image = getImageUrl(recipe);
+  //   }
+  // });
   res.json({ count: recipes.length, results: recipes });
 });
 
@@ -31,7 +31,7 @@ router.get("/:id", auth, async (req, res) => {
 
   if (!recipe) return res.status(404).send("the recipe is not found..!");
 
-  recipe.image = getImageUrl(recipe);
+  // recipe.image = getImageUrl(recipe);
 
   res.json(recipe);
 });
@@ -53,7 +53,7 @@ router.post("/", auth, async (req, res) => {
   ]);
 
   recipeDetails.author = req.user._id;
-  recipeDetails.image = "/images/" + recipeDetails.image;
+  // recipeDetails.image = "/images/" + recipeDetails.image;
 
   const result = await Recipe.create(recipeDetails);
   console.log("New Recipe has been added to the dataBase .");
@@ -106,6 +106,7 @@ router.put("/:id", auth, async (req, res) => {
   recipe.ingridients = req.body.ingridients;
   recipe.instructions = req.body.instructions;
   recipe.category = req.body.category;
+  recipe.image = req.body.image;
 
   recipe.save();
 
